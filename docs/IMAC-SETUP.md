@@ -1,4 +1,4 @@
-# iMac setup runbook
+# Mac setup runbook (iMac or MacBook)
 
 Execute on the target Mac. The intended outcome is a second independent computer
 behind the same familiar Discord workflow. Default category: **IMAC CODEX CONTROL
@@ -7,18 +7,21 @@ CENTER**. The existing machine's category is **LENOVO CODEX CONTROL CENTER**.
 ## 1. Establish the target
 
 Inspect `uname -s`, `uname -m`, the logged-in user's home, available disk space,
-existing bot services, `codex --version`, `codex login status`, `gh auth status`,
+existing bot services, the selected AI CLI/version/login, `gh auth status`,
 and `uv --version`. Install missing prerequisites through their official channels.
 Use Python 3.12 or 3.13; `uv sync` can obtain a compatible Python if needed.
 Use native macOS paths and architecture, with the user's projects under
 `~/Developer`. Preserve an existing macOS CODEX_HOME; WSL/Windows paths do not apply.
 Keep the setup repo in a permanent checkout, not a disposable session worktree.
 
-Codex sign-in and GitHub sign-in happen on the Mac. Login prompts may need Drew.
+The selected AI sign-in and GitHub sign-in happen on the Mac. Login prompts need
+the account owner. For Claude Code, run `claude` interactively and choose the
+Claude App subscription login that belongs to this Mac's user, then verify it with
+`claude auth status` and `claude doctor` before starting the relay.
 Never copy the Lenovo account's auth files, databases, `.venv`, or installed
 executables. A shared GitHub account is fine; machine authentication is separate.
 
-Completion: the agent can run Codex and GitHub CLI as the Mac user, and has a
+Completion: the agent can run the selected AI and GitHub CLI as the Mac user, and has a
 permanent local checkout of this repo.
 
 ## 2. Identify the new bot
@@ -34,7 +37,7 @@ Content Intent**. Invite this application to the existing server with `bot` and
 `applications.commands`. Request Manage Channels for provisioning, plus View
 Channels, Send Messages, Send Messages in Threads, Create Public/Private Threads,
 Manage Threads, Read Message History, Add Reactions, Manage Messages, Embed Links,
-Attach Files, Use Application Commands, and Connect for voice. The iMac bot does
+Attach Files, Use Application Commands, and Connect for voice. The machine bot does
 not need Administrator for its coding workflow. Category permissions grant the
 new bot and operator access; Discord Administrators can still see them.
 
@@ -57,8 +60,11 @@ uv run python -m machine_control setup --env /absolute/path/to/credentials.env
 uv run python -m machine_control setup --env /absolute/path/to/credentials.env --apply
 ```
 
+For Claude Code, pass `--backend claude` and the chosen `--category` to both
+commands. For Codex, the default backend remains `codex`.
+
 Before apply, inspect the preview for the correct bot and target. The existing
-authorization to set up this iMac covers the apply step; do not add a redundant
+authorization to set up this Mac covers the apply step; do not add a redundant
 permission prompt. `--apply` is refused on non-macOS hosts. Optional `--projects`,
 `--data`, and `--category` select local paths and the new category name.
 
@@ -70,19 +76,19 @@ changes. If credentials or paths change later, update the private runtime env fi
 explicitly rather than assuming the input file overwrites it.
 
 Completion: one new category and five channels exist; recorded IDs belong to that
-category; bot identity and local working directory match the iMac.
+category; bot identity and local working directory match the Mac.
 
 ## 4. Start the Mac service
 
 The installer emits a LaunchAgent plist under the private data directory.
 Inspect it, then copy it into the logged-in user's `~/Library/LaunchAgents/` as
-`com.codex.machine-control-center.plist`. Use `plutil -lint` on it and verify that
+`com.ai.machine-control-center.plist`. Use `plutil -lint` on it and verify that
 every executable, env, log and working-directory path exists.
 
 Load it in the user's GUI domain using `launchctl bootstrap gui/USER_UID
-/absolute/path/to/com.codex.machine-control-center.plist`, substituting the real
+/absolute/path/to/com.ai.machine-control-center.plist`, substituting the real
 numeric UID from `id -u`. Inspect `launchctl print
-gui/USER_UID/com.codex.machine-control-center` and the generated log paths. If a
+gui/USER_UID/com.ai.machine-control-center` and the generated log paths. If a
 service with that label already exists, inspect it before updating; manage only
 this Mac's matching instance. Use the local `man launchctl` for installed syntax.
 
@@ -96,7 +102,7 @@ computers. If that port is occupied on the Mac, select an unused local port in
 the runtime env before starting. Keep API_HOST at 127.0.0.1. Source and data paths
 must remain permanent after the setup agent's conversation ends.
 
-Completion: the iMac bot connects, registers `/cdnew`, and reports healthy via its
+Completion: the machine bot connects, registers `/cdnew`, and reports healthy via its
 own local `/api/health`. Logs show both custom Cogs loaded, with no skipped Cog.
 
 ## 5. Finish feature parity
@@ -115,21 +121,21 @@ verification separately.
 
 ## 6. Acceptance checklist
 
-- [ ] Bot identity, server and category match the new iMac configuration.
+- [ ] Bot identity, server, category and selected AI backend match the new machine.
 - [ ] Lenovo category, channel IDs, bot configuration and running sessions preserved.
-- [ ] Normal messages in iMac control-center create threads; replies resume them.
+- [ ] Normal messages in this Mac's control-center create threads; replies resume them.
 - [ ] A thread's `hostname`, `pwd`, and a tiny created/read local file prove execution
       on the Mac. Ask for this bounded check; reading a model's claim is insufficient.
 - [ ] `/cdnew` autocomplete shows Mac project folders and binds the selected folder.
-- [ ] A message or the iMac bot's slash command in the Lenovo category cannot start
-      an iMac coding run. The Lenovo bot stays silent in iMac channels.
-- [ ] An explicitly requested small worker appears in the iMac workers channel and
+- [ ] A message or this bot's slash command in another machine's category cannot start
+      a run here. Other machine bots stay silent in this Mac's channels.
+- [ ] An explicitly requested small worker appears in this Mac's workers channel and
       completes on the Mac. Its link and result return to the coordinating thread.
 - [ ] A disposable GitHub project is cloned locally, changed on a feature branch,
       tested and pushed; its branch and commit are visible on GitHub. Use an existing
       authorized test repo, or obtain its creation/visibility choice from Drew.
 - [ ] Voice: human joins, speaks, leaves; speaker-attributed Markdown updates in the
-      iMac transcript channel and local output persists. Pause/resume is verified.
+      this Mac's transcript channel and local output persists. Pause/resume is verified.
 - [ ] Advanced workflow: approved plan → two isolated workers → verified integration
       works on the Mac, if reproducing the advanced workflow.
 - [ ] Bot recovers after supervised restart and user login; source/state persist.

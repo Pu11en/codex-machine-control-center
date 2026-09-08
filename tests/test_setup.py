@@ -173,7 +173,7 @@ async def test_existing_category_without_receipt_is_not_adopted(tmp_path):
         await provision(api, GUILD, BOT, OWNER, "IMAC", tmp_path / "receipt.json")
 
 
-def test_runtime_uses_mac_paths_and_scoped_channels(tmp_path):
+def test_codex_runtime_uses_mac_paths_and_scoped_channels(tmp_path):
     receipt = {
         "bot_id": BOT,
         "guild_id": GUILD,
@@ -187,6 +187,7 @@ def test_runtime_uses_mac_paths_and_scoped_channels(tmp_path):
         tmp_path / "My Projects",
         tmp_path / "data",
         tmp_path / "source",
+        "codex",
         "/opt/homebrew/bin/codex",
     )
     assert "CCDB_MENTION_ANYWHERE='false'" in env
@@ -200,6 +201,31 @@ def test_runtime_uses_mac_paths_and_scoped_channels(tmp_path):
     parsed = dotenv_values(stream=StringIO(env), interpolate=False)
     assert parsed["CCDB_WORKING_DIR"] == str(tmp_path / "My Projects")
     assert parsed["DISCORD_BOT_TOKEN"] == "test-token"
+    assert parsed["CCDB_CODEX_COMMAND"] == "/opt/homebrew/bin/codex"
+
+
+def test_claude_runtime_uses_friends_subscription_and_not_codex(tmp_path):
+    receipt = {"category_id": "category", "channels": {"control-center": "111", "workers": "222"}}
+    env = environment_text(
+        "friend-token",
+        USER,
+        receipt,
+        tmp_path / "Projects",
+        tmp_path / "data",
+        tmp_path / "source",
+        "claude",
+        "/Users/friend/.local/bin/claude",
+    )
+    from io import StringIO
+
+    from dotenv import dotenv_values
+
+    parsed = dotenv_values(stream=StringIO(env), interpolate=False)
+    assert parsed["CCDB_BACKEND"] == "claude"
+    assert parsed["CCDB_CLAUDE_COMMAND"] == "/Users/friend/.local/bin/claude"
+    assert "CCDB_CODEX_COMMAND" not in parsed
+    assert parsed["DISCORD_OWNER_ID"] == USER
+    assert parsed["CCDB_PERMISSION_MODE"] == "acceptEdits"
 
 
 def test_launch_agent_preserves_spaces_and_keeps_credentials_out(tmp_path):
@@ -208,4 +234,5 @@ def test_launch_agent_preserves_spaces_and_keeps_credentials_out(tmp_path):
     assert plist["ProgramArguments"][-1] == str(tmp_path / "private bot.env")
     assert plist["WorkingDirectory"] == str(tmp_path / "My Repo")
     assert plist["RunAtLoad"] and plist["KeepAlive"]
+    assert plist["Label"] == "com.ai.machine-control-center"
     assert "DISCORD_BOT_TOKEN" not in plist.get("EnvironmentVariables", {})

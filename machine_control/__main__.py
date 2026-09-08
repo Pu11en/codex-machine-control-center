@@ -31,11 +31,13 @@ async def run(args: argparse.Namespace) -> None:
         data = args.data.expanduser().resolve()
         source = Path(__file__).resolve().parents[1]
         projects = args.projects.expanduser().resolve()
-        codex = shutil.which("codex")
-        if not codex:
-            raise ValueError("Install and sign in to Codex on this computer first")
+        executable = shutil.which(args.backend)
+        if not executable:
+            raise ValueError(
+                f"Install and sign in to {args.backend.title()} on this computer first"
+            )
         if args.apply and sys.platform != "darwin":
-            raise ValueError("The iMac installer must be applied on macOS")
+            raise ValueError("The Mac installer must be applied on macOS")
         if not args.apply:
             me = await api.request("GET", "/users/@me")
             if me["id"] != config["EXPECTED_BOT_ID"]:
@@ -49,7 +51,8 @@ async def run(args: argparse.Namespace) -> None:
                         "existing_categories": [c["name"] for c in channels if c["type"] == 4],
                         "projects": str(projects),
                         "state": str(data),
-                        "codex": codex,
+                        "backend": args.backend,
+                        "executable": executable,
                     },
                     indent=2,
                 )
@@ -74,10 +77,17 @@ async def run(args: argparse.Namespace) -> None:
             private_write(
                 env_path,
                 environment_text(
-                    token, str(config["DISCORD_OWNER_ID"]), receipt, projects, data, source, codex
+                    token,
+                    str(config["DISCORD_OWNER_ID"]),
+                    receipt,
+                    projects,
+                    data,
+                    source,
+                    args.backend,
+                    executable,
                 ),
             )
-        plist_path = data / "com.codex.machine-control-center.plist"
+        plist_path = data / "com.ai.machine-control-center.plist"
         private_write(plist_path, launch_agent(source, env_path, logs))
         print(
             json.dumps(
@@ -99,9 +109,10 @@ def main() -> None:
     setup = sub.add_parser("setup", help="Preview; add --apply on the target Mac to provision")
     setup.add_argument("--env", type=Path, required=True)
     setup.add_argument("--category", default="IMAC CODEX CONTROL CENTER")
+    setup.add_argument("--backend", choices=("claude", "codex"), default="codex")
     setup.add_argument("--projects", type=Path, default=Path.home() / "Developer")
     setup.add_argument(
-        "--data", type=Path, default=Path.home() / "Library/Application Support/CodexMachineControl"
+        "--data", type=Path, default=Path.home() / "Library/Application Support/AIMachineControl"
     )
     setup.add_argument("--apply", action="store_true")
     admin = sub.add_parser("admin-once", help="Assign an authorized account Admin on join, once")

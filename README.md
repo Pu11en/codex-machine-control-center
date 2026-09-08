@@ -1,7 +1,7 @@
-# Codex Machine Control Center
+# AI Machine Control Center
 
-Give each computer its own Discord bot and control-center category. Conversations in
-that computer's channels run Codex on that computer, against its own local folders.
+Give each computer and person an independent Discord bot and control-center category.
+Conversations run either Codex or Claude Code on that computer against its local folders.
 
 This is an install kit and agent handoff for the Lenovo → iMac setup. It uses the
 same pinned Ebi Agent Chat Relay version and project picker as the source machine.
@@ -22,11 +22,18 @@ separate installation steps; creating their channels does not activate them.
 The iMac agent needs to run **on the iMac** (or have authorized remote shell access
 to it). Giving a Windows-hosted agent a new token does not move execution to the Mac.
 
+## Give this to a friend's Claude Code agent
+
+Use the ready-to-paste prompt in [FRIEND-MACBOOK-CLAUDE.md](docs/FRIEND-MACBOOK-CLAUDE.md).
+It creates a new category with a new bot on the friend's MacBook, signs Claude Code
+into the friend's own Pro/Max subscription, and authorizes the friend's Discord ID.
+It does not share Drew's AI login, bot token, project files, or session history.
+
 ## Quick start for the agent
 
 Use a permanent checkout under the Mac user's `~/Developer` directory. Install uv,
-Git, GitHub CLI, and the Codex CLI if missing; complete Codex and GitHub sign-in on
-the Mac. Then run:
+Git, GitHub CLI, and the selected AI CLI; complete that AI's login and GitHub sign-in
+on the Mac. Then run:
 
 ```sh
 uv sync --locked --extra relay
@@ -35,9 +42,12 @@ uv run python -m machine_control setup --env /absolute/path/to/credentials.env
 uv run python -m machine_control setup --env /absolute/path/to/credentials.env --apply
 ```
 
+For Claude Code, add `--backend claude` and choose a distinct category with
+`--category "FRIEND NAME MACBOOK CLAUDE CONTROL CENTER"` on both setup commands.
+
 The credentials file has four fields; `.env.example` is the template. The setup
 stores channel IDs, local configuration, and the generated LaunchAgent outside Git
-under `~/Library/Application Support/CodexMachineControl/`. Follow
+under `~/Library/Application Support/AIMachineControl/`. Follow
 [the Mac guide](docs/IMAC-SETUP.md) to start the service and verify it in Discord.
 
 The installer creates only its own resources. It refuses a mismatched bot identity,
@@ -85,7 +95,7 @@ It prepares a `Server Admin` role, waits if that exact account has not joined,
 verifies the assigned role, and records completion. Run it on a timer while pending.
 After success, later manual role removal is respected; it does not continually
 re-grant access. The bot requires Administrator and a higher role position to
-provision this role. This command is separate from installing the iMac bot.
+provision this role. This command is separate from installing a machine bot.
 
 Server Administrator does not override the relay's owner-only computer access.
 Sharing machine execution requires an explicit additional user-access configuration.
@@ -101,7 +111,7 @@ uv run pyright machine_control
 ```
 
 The automated suite checks provisioning, one-time authorization, macOS service
-configuration, scoped slash commands, and the imported folder picker. Live iMac
-acceptance requires the real Mac and the new bot; see the guide's checklist.
+configuration, scoped slash commands, and the imported folder picker. Live Mac
+acceptance requires the real computer and new bot; see the guide's checklist.
 Dependency versions are frozen in `uv.lock`; upstream code provenance is in
 [SOURCES.md](SOURCES.md).
