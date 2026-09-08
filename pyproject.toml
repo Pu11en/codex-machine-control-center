@@ -1,0 +1,32 @@
+[project]
+name = "codex-machine-control-center"
+version = "0.1.0"
+description = "Reproduce a per-computer Discord Codex control center"
+requires-python = ">=3.12,<3.14"
+dependencies = ["aiohttp>=3.14.3", "python-dotenv>=1.2.2"]
+
+[project.optional-dependencies]
+relay = ["claude-code-discord-bridge[api,images]"]
+
+[tool.uv.sources]
+claude-code-discord-bridge = { git = "https://github.com/ebibibi/ebi-agent-chat-relay.git", rev = "7fc303c33cfa97e9c17966227dd3c85d787d32d0" }
+
+[dependency-groups]
+dev = ["pytest>=9.1.1", "pytest-asyncio>=1.4.0", "ruff>=0.16.3", "pyright>=1.1.411"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests", "extensions/project_picker/tests"]
+pythonpath = [".", "extensions/project_picker"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pyright]
+pythonVersion = "3.12"
+typeCheckingMode = "basic"
+include = ["machine_control"]
