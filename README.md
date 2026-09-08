@@ -94,7 +94,7 @@ Sharing machine execution requires an explicit additional user-access configurat
 
 ```sh
 uv sync --locked --extra relay
-uv run pytest -q
+uv run pytest -q --basetemp=/tmp/codex-control-tests
 uv run ruff check machine_control tests extensions/project_picker
 uv run ruff format --check machine_control tests extensions/project_picker
 uv run pyright machine_control

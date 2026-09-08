@@ -9,3 +9,5 @@ kit with formatting changes only. See ../../SOURCES.md for the adaptation summar
 The chat counterpart uses the relay's existing `CCDB_MENTION_ANYWHERE=false` and
 explicit `CCDB_CHANNEL_IDS` settings. `/cdnew` suggests folders under
 `CCDB_PROJECT_ROOTS`; that list is navigation, not a filesystem sandbox.
+Discord autocomplete values are limited to 100 characters. Longer absolute paths
+are omitted from suggestions; enter the path directly in `/cdnew` instead.

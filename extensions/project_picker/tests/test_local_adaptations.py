@@ -26,6 +26,16 @@ async def test_spaces_and_case_insensitive_name(tmp_path):
 
 
 @pytest.mark.asyncio
+async def test_long_paths_are_not_sent_as_invalid_discord_choices(tmp_path):
+    project = tmp_path / ("long-project-" + "x" * 100)
+    project.mkdir()
+    cog, _ = _make_cog(tmp_path)
+    assert await cog._path_autocomplete(_interaction(_thread()), "long-project") == []
+    # Directly entering the full path still works.
+    assert WorkdirCommandCog._validate_dir(str(project)) == project.resolve()
+
+
+@pytest.mark.asyncio
 async def test_cd_does_not_retarget_active_run(tmp_path):
     cog, repo = _make_cog(tmp_path)
     cog._chat_cog = SimpleNamespace(_thread_locks={}, _active_runners={THREAD_ID: object()})
