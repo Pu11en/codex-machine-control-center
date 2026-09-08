@@ -10,6 +10,8 @@ For a friend-owned MacBook using Claude Code, also read
 `docs/FRIEND-MACBOOK-CLAUDE.md`. Use `--backend claude`, the friend's Discord user
 ID, the new bot identity, and that person's own Claude login. Treat the category
 name supplied by the operator as its permanent machine label.
+When `CCDB_ADDITIONAL_USER_IDS` is supplied, preserve the primary owner's access
+and add exactly those numeric Discord IDs to chat, skill and project-picker access.
 
 For moving or continuing a project across computers, read `docs/PROJECTS.md`.
 For voice or advanced workflow parity, read `docs/EXTENSIONS.md` and follow the

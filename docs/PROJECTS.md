@@ -40,6 +40,11 @@ and open the project conversation. Continue work by replying in that thread.
 To return later, reopen the same project thread or use `/search`. A new `/cdnew`
 starts fresh conversation context even when it points at the same folder.
 
+The GitHub URL is the cross-machine identifier. A phrase such as “the repository
+from the other category” is not enough: each relay has its own local session and
+folder database. Supply the branch and commit too when the wanted version is not
+already the default branch's tip.
+
 ## Receiving subsequent changes
 
 Inspect status and branch, then fetch. If the local branch is clean and only behind

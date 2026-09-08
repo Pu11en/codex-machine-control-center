@@ -20,6 +20,7 @@ def environment_text(
     source: Path,
     backend: str,
     executable: str,
+    additional_user_ids: str = "",
 ) -> str:
     if backend not in {"claude", "codex"}:
         raise ValueError("Backend must be claude or codex")
@@ -55,6 +56,8 @@ def environment_text(
             ]
         ),
     }
+    if additional_user_ids:
+        values["CCDB_ADDITIONAL_USER_IDS"] = additional_user_ids
     values["CCDB_CLAUDE_COMMAND" if backend == "claude" else "CCDB_CODEX_COMMAND"] = executable
     return "".join(f"{k}={dotenv_quote(v)}\n" for k, v in values.items())
 
