@@ -1,7 +1,7 @@
 [project]
 name = "codex-machine-control-center"
 version = "0.1.0"
-description = "Reproduce a per-computer Discord Codex control center"
+description = "Reproduce per-computer Discord control centers for Codex or Claude Code"
 requires-python = ">=3.12,<3.14"
 dependencies = ["aiohttp>=3.14.3", "python-dotenv>=1.2.2"]
 

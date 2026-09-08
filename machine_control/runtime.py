@@ -18,16 +18,19 @@ def environment_text(
     projects: Path,
     data: Path,
     source: Path,
-    codex: str,
+    backend: str,
+    executable: str,
 ) -> str:
+    if backend not in {"claude", "codex"}:
+        raise ValueError("Backend must be claude or codex")
     values = {
         "DISCORD_BOT_TOKEN": token,
         "DISCORD_OWNER_ID": owner_id,
         "DISCORD_CHANNEL_ID": receipt["channels"]["control-center"],
         "CCDB_CHANNEL_IDS": ",".join(receipt["channels"][c] for c in ("control-center", "workers")),
         "COORDINATION_CHANNEL_ID": receipt["channels"]["workers"],
-        "CCDB_BACKEND": "codex",
-        "CCDB_CODEX_COMMAND": codex,
+        "CCDB_BACKEND": backend,
+        "CCDB_PERMISSION_MODE": "acceptEdits",
         "CCDB_WORKING_DIR": str(projects),
         "CCDB_PROJECT_ROOTS": str(projects),
         "CCDB_DATA_ROOT": str(data / "relay"),
@@ -42,7 +45,7 @@ def environment_text(
         "PATH": ":".join(
             [
                 str(source / ".venv/bin"),
-                str(Path(codex).parent),
+                str(Path(executable).parent),
                 "/opt/homebrew/bin",
                 "/usr/local/bin",
                 "/usr/bin",
@@ -52,13 +55,14 @@ def environment_text(
             ]
         ),
     }
+    values["CCDB_CLAUDE_COMMAND" if backend == "claude" else "CCDB_CODEX_COMMAND"] = executable
     return "".join(f"{k}={dotenv_quote(v)}\n" for k, v in values.items())
 
 
 def launch_agent(source: Path, env: Path, logs: Path) -> bytes:
     return plistlib.dumps(
         {
-            "Label": "com.codex.machine-control-center",
+            "Label": "com.ai.machine-control-center",
             "ProgramArguments": [
                 str(source / ".venv" / "bin" / "ccdb"),
                 "start",

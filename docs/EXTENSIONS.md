@@ -2,7 +2,7 @@
 
 The base installer reproduces coding chat, project selection, worker channels,
 reference and voice-channel layout. To match the newer source-machine features,
-the iMac agent must also install these two components and verify them on macOS.
+the Mac agent must also install these two components and verify them on macOS.
 Use the immutable commits in SOURCES.md, not a moving branch or the source
 machine's private runtime directories.
 
@@ -23,7 +23,7 @@ The channels already exist: do not invoke the source channel-creation helper aga
 Write a private voice env file with those IDs, a Mac data path, and the absolute
 Python executable. Point VOICE_BRIDGE_ENV_FILE at this Mac's `relay.env` and
 VOICE_CONFIG_FILE at the private voice env file. The companion intentionally uses
-the **same new iMac bot identity** as the iMac relay, with no message handler and
+the **same new machine bot identity** as the relay, with no message handler and
 no slash-command registration. Do not use the Lenovo token or channels.
 
 Translate its systemd launcher to a macOS LaunchAgent with an absolute Node
@@ -50,7 +50,7 @@ Install the pinned OpenSpec CLI and the two specific coordination skills named i
 SOURCES.md into the Mac's discovered Codex skills location. Install only the
 selected workflow; Portable Planner is retired. Preserve existing project plans.
 Install the adapter's skill and executable with Mac paths; do not copy WSL absolute
-paths from an existing generated skill. Use the iMac API URL and **iMac workers
+paths from an existing generated skill. Use this Mac's API URL and **its workers
 channel ID** for every dispatch. Preserve the approved-plan revision, committed
 foundation, isolated worktrees, bounded worker queue and integration checks.
 

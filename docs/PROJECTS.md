@@ -61,6 +61,6 @@ from templates and install dependencies on the target OS; Windows or Linux binar
 packages cannot simply be reused on a Mac.
 
 The relay's localhost lounge/claims coordinate only sessions using that one relay.
-The iMac and Lenovo do not share that database or a global worktree lock. GitHub
+Separate machines do not share that database or a global worktree lock. GitHub
 branches/PRs and explicit task ownership are the cross-computer coordination layer.
 Each relay's limit of three active sessions is independent.
