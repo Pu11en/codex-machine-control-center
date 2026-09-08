@@ -26,7 +26,7 @@ to it). Giving a Windows-hosted agent a new token does not move execution to the
 
 Use the ready-to-paste prompt in [FRIEND-MACBOOK-CLAUDE.md](docs/FRIEND-MACBOOK-CLAUDE.md).
 It creates a new category with a new bot on the friend's MacBook, signs Claude Code
-into the friend's own Pro/Max subscription, and authorizes the friend's Discord ID.
+into the friend's own Pro/Max subscription, and can authorize both the friend and Drew.
 It does not share Drew's AI login, bot token, project files, or session history.
 
 ## Quick start for the agent
@@ -45,7 +45,8 @@ uv run python -m machine_control setup --env /absolute/path/to/credentials.env -
 For Claude Code, add `--backend claude` and choose a distinct category with
 `--category "FRIEND NAME MACBOOK CLAUDE CONTROL CENTER"` on both setup commands.
 
-The credentials file has four fields; `.env.example` is the template. The setup
+The credentials file has four required fields plus an optional additional-user list;
+`.env.example` is the template. The setup
 stores channel IDs, local configuration, and the generated LaunchAgent outside Git
 under `~/Library/Application Support/AIMachineControl/`. Follow
 [the Mac guide](docs/IMAC-SETUP.md) to start the service and verify it in Discord.

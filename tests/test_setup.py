@@ -215,6 +215,7 @@ def test_claude_runtime_uses_friends_subscription_and_not_codex(tmp_path):
         tmp_path / "source",
         "claude",
         "/Users/friend/.local/bin/claude",
+        str(OWNER),
     )
     from io import StringIO
 
@@ -225,6 +226,7 @@ def test_claude_runtime_uses_friends_subscription_and_not_codex(tmp_path):
     assert parsed["CCDB_CLAUDE_COMMAND"] == "/Users/friend/.local/bin/claude"
     assert "CCDB_CODEX_COMMAND" not in parsed
     assert parsed["DISCORD_OWNER_ID"] == USER
+    assert parsed["CCDB_ADDITIONAL_USER_IDS"] == OWNER
     assert parsed["CCDB_PERMISSION_MODE"] == "acceptEdits"
 
 

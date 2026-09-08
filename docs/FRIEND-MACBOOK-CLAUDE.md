@@ -4,12 +4,13 @@
 
 Send the friend the public repository URL and the prompt below. Drew creates a new
 Discord application/bot for this MacBook, invites it to the existing server, and
-provides these four values to the friend's local setup agent:
+provides these values to the friend's local setup agent:
 
 - new bot token;
 - existing Discord server ID;
 - new bot application/user ID;
 - friend's permanent Discord user ID.
+- Drew's permanent Discord user ID as an additional authorized user.
 
 Drew also chooses the visible category name, for example **ALEX MACBOOK CLAUDE
 CONTROL CENTER**. One bot application and category belong to this one MacBook.
@@ -33,7 +34,9 @@ the agent requests the four missing values.
 > docs/FRIEND-MACBOOK-CLAUDE.md completely, and finish their acceptance checklist.
 > Use `--backend claude` and create the category “[FRIEND NAME] MACBOOK CLAUDE
 > CONTROL CENTER.” I will provide this new bot's token, the server ID, the new bot
-> ID, and my Discord user ID. Store runtime credentials outside Git with private
+> ID, my Discord user ID, and Drew's Discord user ID. Configure me as
+> `DISCORD_OWNER_ID` and Drew as `CCDB_ADDITIONAL_USER_IDS`, so either of us can use
+> this MacBook bot. Store runtime credentials outside Git with private
 > permissions. Install Claude Code from Anthropic's official instructions, and let
 > me complete the interactive Claude App Pro/Max login on this Mac. Verify
 > `claude auth status` and `claude doctor`. Configure Ebi Agent Chat Relay, the
@@ -44,6 +47,11 @@ the agent requests the four missing values.
 > working directory, local file, restart, `/cdnew`, worker, and small GitHub
 > clone/change/push checks that work actually runs on this MacBook. Report links
 > and local paths without exposing any credentials.
+
+Set the friend's ID as `DISCORD_OWNER_ID` and Drew's ID in
+`CCDB_ADDITIONAL_USER_IDS`. Both can then start and continue Claude work through
+this bot. Discord Administrator by itself does not grant relay access; this explicit
+allowlist does. Either person can see who issued each Discord message and Git commit.
 
 ## What the friend should expect to do
 
@@ -56,6 +64,30 @@ The friend can then use their category exactly as Drew uses the Lenovo category:
 write in `#control-center`, use `/cdnew` for local projects, and continue work in
 the created project thread. Their Claude subscription usage belongs to their own
 Claude account.
+
+## Clone a project through natural language
+
+Yes: an authorized person can paste a GitHub URL into this MacBook's
+`#control-center` and say:
+
+> Clone this repository into the local projects folder on this MacBook:
+> REPOSITORY_URL. Check out BRANCH_NAME, verify COMMIT_ID if supplied, install its
+> dependencies for this Mac, and inspect its project instructions. Keep secrets out
+> of Git. When the clone is ready, give me the exact local folder name and tell me
+> to open it with this bot's `/cdnew` command. Do not change the project yet.
+
+That message itself opens an installation conversation. After the clone finishes,
+run this bot's `/cdnew` and select the folder. `/cdnew` creates the durable project
+thread bound to that exact folder, so later messages and resumed sessions start in
+the project instead of the general projects directory. This two-stage flow makes
+the directory binding visible and avoids silently attaching a thread to the wrong
+computer or folder.
+
+The URL identifies the project. Saying only “the repo from the other category” is
+ambiguous because separate machine bots do not share session databases or know
+which thread/folder you mean. Include at least the GitHub URL. Include the branch
+and commit whenever the desired work is not already on the repository's default
+branch.
 
 ## Sharing projects with Drew
 

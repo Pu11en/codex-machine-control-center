@@ -85,6 +85,7 @@ async def run(args: argparse.Namespace) -> None:
                     source,
                     args.backend,
                     executable,
+                    str(config.get("CCDB_ADDITIONAL_USER_IDS") or ""),
                 ),
             )
         plist_path = data / "com.ai.machine-control-center.plist"
