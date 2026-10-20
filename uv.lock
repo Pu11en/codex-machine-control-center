@@ -148,7 +148,7 @@ wheels = [
 [[package]]
 name = "claude-code-discord-bridge"
 version = "4.2.0"
-source = { git = "https://github.com/Pu11en/ebi-agent-chat-relay.git?rev=1514f26de05c299ab3e67d8d34e3974fb1caad16#1514f26de05c299ab3e67d8d34e3974fb1caad16" }
+source = { git = "https://github.com/Pu11en/ebi-agent-chat-relay.git?rev=f1372cff5254e91bc7f9d3e59cbe2e473b9a3a20#f1372cff5254e91bc7f9d3e59cbe2e473b9a3a20" }
 dependencies = [
     { name = "aiosqlite" },
     { name = "discord-py" },
@@ -190,7 +190,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "aiohttp", specifier = ">=3.14.3" },
-    { name = "claude-code-discord-bridge", extras = ["api", "images"], marker = "extra == 'relay'", git = "https://github.com/Pu11en/ebi-agent-chat-relay.git?rev=1514f26de05c299ab3e67d8d34e3974fb1caad16" },
+    { name = "claude-code-discord-bridge", extras = ["api", "images"], marker = "extra == 'relay'", git = "https://github.com/Pu11en/ebi-agent-chat-relay.git?rev=f1372cff5254e91bc7f9d3e59cbe2e473b9a3a20" },
     { name = "python-dotenv", specifier = ">=1.2.2" },
 ]
 provides-extras = ["relay"]
