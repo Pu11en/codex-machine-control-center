@@ -9,7 +9,7 @@ dependencies = ["aiohttp>=3.14.3", "python-dotenv>=1.2.2"]
 relay = ["claude-code-discord-bridge[api,images]"]
 
 [tool.uv.sources]
-claude-code-discord-bridge = { git = "https://github.com/Pu11en/ebi-agent-chat-relay.git", rev = "f1372cff5254e91bc7f9d3e59cbe2e473b9a3a20" }
+claude-code-discord-bridge = { git = "https://github.com/Pu11en/ebi-agent-chat-relay.git", rev = "1514f26de05c299ab3e67d8d34e3974fb1caad16" }
 
 [dependency-groups]
 dev = ["pytest>=9.1.1", "pytest-asyncio>=1.4.0", "ruff>=0.16.3", "pyright>=1.1.411"]
